@@ -47,11 +47,13 @@
         <q-input
           @click="getLocation"
           v-model="post.location"
+          :loading="locationLoading"
           class="col col-sm-6"
           label="Location"
           dense>
             <template v-slot:append>
               <q-btn
+                v-if="!locationLoading && locationSupported"
                 round
                 dense
                 flat
@@ -88,7 +90,14 @@ export default {
       },
       imageCaptured: false,
       imageUpload: [],
-      hasCameraSupport: true
+      hasCameraSupport: true,
+      locationLoading: false
+    }
+  },
+  computed: {
+    locationSupported() {
+      if('geolocation' in navigor) return true
+      return false
     }
   },
   methods: {
@@ -161,10 +170,13 @@ export default {
 
     },
     getLocation() {
+      this.locationLoading = true
       navigator.geolocation.getCurrentPosition(position => {
         this.getCityAndCountry(position)
+        this.locationLoading = false
       }, err => {
         this.locationError()
+        this.locationLoading = false
       }, { timeout: 7000 })
     },
     getCityAndCountry(position) {
@@ -190,6 +202,7 @@ export default {
   },
   mounted() {
     this.initCamera()
+    console.log('navigator', navigator)
   },
   beforeDestroy() {
     if(this.hasCameraSupport) {
