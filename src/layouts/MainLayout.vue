@@ -27,11 +27,12 @@
 <script>
 export default {
   name: 'MainLayout',
-  data () {
-  }
+  // data () {
+
+  // }
 }
 </script>
-<style lang="sass" scoped>
+<style lang="sass">
   .q-toolbar
     @media (min-width: $breakpoint-xs-max)
       height: 77px
