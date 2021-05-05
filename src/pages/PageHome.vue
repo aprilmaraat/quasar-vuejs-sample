@@ -30,7 +30,34 @@
 
 <script>
 export default {
-  name: 'PageHome'
+  name: 'PageHome',
+  data() {
+    return {
+      posts: [
+        {
+          id: 1,
+          caption: 'Golden Gate Bridge',
+          date: 1620181387741,
+          location: 'Philippines',
+          imgUrl: 'https://cdn.quasar.dev/img/avatar2.jpg'
+        },
+        {
+          id: 2,
+          caption: 'Golden Gate Bridge',
+          date: 1620181387741,
+          location: 'Philippines',
+          imgUrl: 'https://cdn.quasar.dev/img/avatar2.jpg'
+        },
+        {
+          id: 3,
+          caption: 'Golden Gate Bridge',
+          date: 1620181387741,
+          location: 'Philippines',
+          imgUrl: 'https://cdn.quasar.dev/img/avatar2.jpg'
+        }
+      ]
+    }
+  }
 }
 </script>
 <style lang="sass">
