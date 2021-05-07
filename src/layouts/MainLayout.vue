@@ -12,6 +12,19 @@
     </q-header>
 
     <q-footer class="bg-white small-screen-only" bordered>
+      <q-banner
+        v-if="showAppInstallBanner"
+        inline-actions
+        class="text-white bg-primary">
+        Install Quasargram?
+        <template v-slot:action>
+          <q-btn
+            flat
+            color="white"
+            label="Install App" />
+          <q-btn flat color="white" label="Close" />
+        </template>
+      </q-banner>
       <q-tabs class="text-grey-10" active-color="primary" indicator-color="transparent">
         <q-route-tab to="/" icon="eva-home-outline"/>
         <q-route-tab to="/camera" icon="eva-camera-outline"/>
@@ -25,11 +38,42 @@
 </template>
 
 <script>
+// Initialize deferredPrompt for use later to show browser install prompt.
+let deferredPrompt;
+
 export default {
   name: 'MainLayout',
-  // data () {
-
-  // }
+  data () {
+    return {
+      showAppInstallBanner: false
+    }
+  },
+  mounted() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      // Update UI notify the user they can install the PWA
+      this.showAppInstallBanner = true;
+    });
+  },
+  methods: {
+    installApp() {
+      // Hide the app provided install promotion
+      this.showAppInstallBanner = false
+      // Show the install prompt
+      deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice.userChoice.then ((choiceResult) => {
+        if (choiceResult.outcom === 'accepted'){
+          console.log('Yes');
+        } else {
+          console.log('No');
+        }
+      });
+    }
+  }
 }
 </script>
 <style lang="sass">
